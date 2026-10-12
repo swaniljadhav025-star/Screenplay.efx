@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Script Desk</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap">
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#0A0E1A;--ink:#F3F5FA;--mute:rgba(235,240,255,.6);--g:rgba(255,255,255,.1);--gb:rgba(255,255,255,.22);--hi:rgba(255,255,255,.38);--acc:#4C9BFF;--accfg:#fff;--kb:0px}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#E8EEF9;--ink:#0F1522;--mute:rgba(15,21,34,.6);--g:rgba(255,255,255,.55);--gb:rgba(255,255,255,.9);--hi:#fff;--acc:#0A6CFF}}
+:root[data-theme="light"]{--bg:#E8EEF9;--ink:#0F1522;--mute:rgba(15,21,34,.6);--g:rgba(255,255,255,.55);--gb:rgba(255,255,255,.9);--hi:#fff;--acc:#0A6CFF}
+*,*:before,*:after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 -apple-system,'SF Pro Text',system-ui,'Segoe UI',sans-serif;-webkit-tap-highlight-color:transparent}
+body:before{content:'';position:fixed;inset:0;z-index:-1;background:radial-gradient(45% 30% at 12% 8%,rgba(76,110,255,.5),transparent),radial-gradient(40% 28% at 92% 30%,rgba(176,70,220,.38),transparent),radial-gradient(45% 30% at 25% 96%,rgba(20,190,140,.38),transparent)}
+#app{max-width:560px;margin:0 auto;padding:12px 14px 240px}
+.gl{background:var(--g);-webkit-backdrop-filter:blur(24px) saturate(180%);backdrop-filter:blur(24px) saturate(180%);border:1px solid var(--gb);box-shadow:inset 0 1px 0 var(--hi),inset 0 -1px 0 rgba(255,255,255,.06),0 10px 32px rgba(0,0,0,.2);border-radius:22px}
+button,input,textarea,select{font:inherit;color:inherit}
+button{cursor:pointer;border:0;background:none}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+h1{font-size:32px;margin:14px 2px 10px;letter-spacing:-.02em}
+h2{font-size:16px;margin:16px 4px 6px}
+.mut{color:var(--mute);font-size:13px}
+.top{display:flex;align-items:center;gap:8px;padding:6px;border-radius:999px;position:sticky;top:env(safe-area-inset-top,0px);z-index:6;margin-bottom:10px}
+.top input{flex:1;min-width:0;border:0;background:none;font:700 16px 'Courier Prime','Courier New',monospace;text-align:center;text-transform:uppercase}
+.ic{width:40px;height:40px;border-radius:50%;font-size:20px;background:rgba(255,255,255,.12);flex:none}
+.seg{display:flex;padding:4px;border-radius:999px}
+.seg button{flex:1;padding:9px;border-radius:999px;font-weight:600;color:var(--mute)}
+.on{background:rgba(255,255,255,.18);color:var(--acc)!important;box-shadow:inset 0 1px 0 var(--hi)}
+.li{display:flex;align-items:center;gap:12px;padding:14px;margin:10px 0;text-align:left;width:100%}
+.li b{display:block;font-size:17px}
+.fi{width:44px;height:44px;border-radius:14px;background:rgba(76,155,255,.25);display:grid;place-items:center;font-size:22px;flex:none}
+.fab{position:fixed;right:max(18px,calc(50% - 262px));bottom:calc(24px + env(safe-area-inset-bottom,0px));padding:15px 22px;border-radius:999px;background:var(--acc);color:var(--accfg);font-weight:700;box-shadow:inset 0 1px 0 rgba(255,255,255,.5),0 10px 28px rgba(0,0,0,.35);z-index:9}
+.bar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(var(--kb) + 12px + env(safe-area-inset-bottom,0px));width:min(520px,calc(100% - 24px));display:flex;padding:6px;border-radius:999px;z-index:8}
+.bar button{flex:1;padding:8px 2px;border-radius:999px;font-size:12px;color:var(--mute);display:flex;flex-direction:column;align-items:center}
+.bar i,.ty i{font-style:normal;font-size:19px}
+.kb .bar{display:none}
+.tbw{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(var(--kb) + 80px + env(safe-area-inset-bottom,0px));width:min(520px,calc(100% - 24px));padding:6px;z-index:7;border-radius:26px}
+.kb .tbw{bottom:calc(var(--kb) + 8px)}
+.sg{display:flex;gap:6px;overflow-x:auto;padding:2px 2px 6px}
+.sg button{flex:none;padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.12);font-weight:600;font-size:13px}
+.ty{display:flex;gap:4px;overflow-x:auto}
+.ty button{flex:none;min-width:58px;padding:6px 4px;border-radius:14px;font-size:11px;color:var(--mute);display:flex;flex-direction:column;align-items:center}
+.page{padding:26px 18px;min-height:60vh;font:400 16px/1.45 'Courier Prime','Courier New',monospace}
+.bl{outline:none;white-space:pre-wrap;word-break:break-word;min-height:1.45em}
+.bl:focus{background:rgba(76,155,255,.14);border-radius:4px}
+.bl:empty:before{content:attr(data-ph);color:var(--mute);opacity:.6}
+.t-h{font-weight:700;text-transform:uppercase;margin-top:1.8em}
+.t-a{margin-top:.9em}
+.t-c{margin:.9em 0 0 30%;text-transform:uppercase}
+.t-d{margin:0 4% 0 14%}
+.t-p{margin:0 10% 0 22%}
+.t-t{text-align:right;text-transform:uppercase;margin-top:.9em}
+.bl:first-child{margin-top:0}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.cd{position:relative;padding:12px;display:flex;flex-direction:column;gap:8px;text-align:left;min-height:110px}
+.t{font:700 13px 'Courier Prime','Courier New',monospace;text-transform:uppercase;word-break:break-word}
+.f,.cd textarea{width:100%;background:rgba(255,255,255,.1);border:1px solid var(--gb);border-radius:14px;padding:11px 12px}
+.cd textarea{min-height:80px;font-size:14px}
+.xm{position:absolute;top:6px;right:6px;width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.14);font-size:13px}
+.sm{padding:6px 11px;border-radius:999px;background:rgba(255,255,255,.14);font-size:13px;font-weight:600}
+.rw{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.dot{width:20px;height:20px;border-radius:50%;padding:0;border:2px solid rgba(255,255,255,.7)}
+.dp{display:flex;align-items:center;justify-content:center;text-align:center;min-height:130px;padding:12px;font-size:17px;font-weight:600;flex-direction:column;gap:10px}
+.dp i{font-style:normal;font-size:30px}
+.scrim{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:10}
+.sheet{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom,0px));width:min(540px,calc(100% - 24px));padding:10px;z-index:11;border-radius:30px}
+#toast{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);padding:10px 18px;border-radius:999px;opacity:0;transition:opacity .2s;z-index:20;pointer-events:none}
+.emp{text-align:center;padding:30px;color:var(--mute)}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div id="toast" class="gl"></div>
+<script>
+const KEY='script-desk-v3',$=id=>document.getElementById(id),app=$('app');
+const T={h:'Scene heading',a:'Action',c:'Character',d:'Dialogue',p:'Parenthetical',t:'Transition'},ORD=['a','c','d','p','t','h'],NEXT={h:'a',a:'a',c:'d',d:'a',p:'d',t:'h'};
+const TY=[['h','🎬','Scene'],['a','📣','Action'],['c','🎭','Character'],['d','💬','Dialogue'],['p','( )','Paren'],['t','⇄','Transition']];
+const SUG={h:['INT.','EXT.','INT/EXT.','EXT/INT.'],t:['CUT TO:','FADE IN:','FADE OUT:','DISSOLVE TO:','SMASH CUT:'],p:['(V.O.)','(O.S.)',"(CONT'D)",'(beat)']};
+const DEPT=[['cast','👤','Cast, Extras','#5B8DFF'],['cos','🧥','Costume','#D13BD6'],['mk','🙂','Makeup','#FF86C4'],['loc','📍','Location & Set','#B58BC4'],['prop','🛠','Props, Set Design, Animal, Vehicle etc.','#E0594D'],['cam','📷','Camera, Lighting, VFX etc.','#22C997']];
+const COL=['#8A94A3','#E0594D','#E3A81F','#3E9E64','#4C8BE0','#9B66D0'],TN={docs:'Script',bd:'Breakdown',shots:'Shot List',dept:'Department'};
+let S={p:[],n:[]},R0={v:'home',ht:'p',tab:'docs',sub:null,et:'script'},P=null,D=null,gi=0,curId=null,tm,H=[],X=[],sheet=false,pg=null;
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const mkDoc=t=>({id:uid(),title:t||'Screenplay',b:[{id:uid(),t:'h',x:''},{id:uid(),t:'a',x:''}],syn:{},col:{}});
+const mkProj=(t,a,b)=>({id:uid(),title:t,start:a,end:b,docs:[mkDoc('Screenplay')],dep:{},shots:[],beats:[]});
+const fmtD=d=>d?new Date(d+'T00:00').toLocaleDateString('en',{day:'2-digit',month:'short'}).toUpperCase().replace(' ','-'):'';
+const iso=n=>{const d=new Date();d.setDate(d.getDate()+n);return d.toISOString().slice(0,10)};
+try{const r=localStorage.getItem(KEY);if(r)S=JSON.parse(r);else{let o=localStorage.getItem('script-desk-v2');if(o){o=JSON.parse(o);const p=mkProj(o.title||'My script','','');Object.assign(p.docs[0],{title:o.title||'Screenplay',b:o.b&&o.b.length?o.b:p.docs[0].b,syn:o.syn||{},col:o.col||{}});S.p.push(p);save()}}}catch(e){}
+S.p=S.p||[];S.n=S.n||[];
+function toast(m){const t=$('toast');t.textContent=m;t.style.opacity=1;setTimeout(()=>t.style.opacity=0,1700)}
+function add(t,x,at){const b={id:uid(),t,x:x||''};if(at==null)D.b.push(b);else D.b.splice(at,0,b);return b}
+const bi=id=>D.b.findIndex(b=>b.id===id),curB=()=>D.b[bi(curId)],el=id=>document.querySelector('.bl[data-id="'+id+'"]');
+function scenesL(d){d=d||D;const r=[];d.b.forEach((b,i)=>{if(b.t==='h'){if(r.length)r[r.length-1].e=i;r.push({s:i,e:d.b.length})}});return r}
+const cname=x=>x.trim().toUpperCase().replace(/\s*\(.*\)$/,'');
+function names(docs){const m={};(docs||[D]).forEach(d=>d.b.forEach(b=>{if(b.t==='c'&&b.x.trim())m[cname(b.x)]=1}));return Object.keys(m)}
+function snap(){const j=JSON.stringify(D.b);if(H[H.length-1]!==j){H.push(j);if(H.length>60)H.shift();X=[]}}
+function later(){clearTimeout(tm);tm=setTimeout(()=>{save();snap();if(R0.v==='edit'&&R0.et==='script')tbUp()},250)}
+function undo(){if(H.length>1){X.push(H.pop());D.b=JSON.parse(H[H.length-1]);save();drawPage()}}
+function redo(){if(X.length){const j=X.pop();H.push(j);D.b=JSON.parse(j);save();drawPage()}}
+function mk(b){const e=document.createElement('div');e.className='bl t-'+b.t;e.dataset.id=b.id;e.dataset.ph=T[b.t];try{e.contentEditable='plaintext-only'}catch(x){e.contentEditable='true'}e.textContent=b.x;return e}
+function foc(e,end){if(!e)return;e.focus();const r=document.createRange();r.selectNodeContents(e);r.collapse(!end);const s=getSelection();s.removeAllRanges();s.addRange(r)}
+function caretAt(d){const s=getSelection();return s.anchorNode===d?(s.anchorOffset?d.textContent.length:0):s.anchorOffset}
+function setType(b,t){b.t=t;const e=el(b.id);if(e){e.className='bl t-'+t;e.dataset.ph=T[t]}save();tbUp()}
+function grp(){const sc=scenesL(),n=Math.max(1,Math.ceil(sc.length/10));gi=Math.min(gi,n-1);const s=gi?sc[gi*10].s:0,e=sc[(gi+1)*10]?sc[(gi+1)*10].s:D.b.length;return{n,s,e,sc}}
+function drawPage(){const g=grp();pg.innerHTML='';D.b.slice(g.s,g.e).forEach(b=>pg.appendChild(mk(b)));tbUp()}
+function tbUp(){const t=$('tb');if(!t)return;const b=curB(),ty=b?b.t:'a',sg=ty==='c'?names():SUG[ty]||[];
+t.innerHTML=(sg.length?'<div class="sg">'+sg.map(s=>`<button data-a="sug" data-v="${esc(s)}">${esc(s)}</button>`).join('')+'</div>':'')+'<div class="ty">'+TY.map(x=>`<button data-a="type" data-v="${x[0]}" class="${ty===x[0]?'on':''}"><i>${x[1]}</i>${x[2]}</button>`).join('')+'<button data-a="undo"><i>↶</i>Undo</button><button data-a="redo"><i>↷</i>Redo</button></div>'}
+function applySug(s){const b=curB();if(!b)return;const e=el(b.id),i=bi(b.id);
+if(b.t==='c'){b.x=s;e.textContent=s;if(!D.b[i+1]||D.b[i+1].t!=='d')e.after(mk(add('d','',i+1)));curId=D.b[i+1].id;foc(el(curId),false)}
+else{b.x=b.t==='h'?s+' '+b.x.replace(/^(INT\.?\/EXT\.?|EXT\.?\/INT\.?|INT\/EXT\.?|EXT\/INT\.?|INT\.?|EXT\.?)\s*/i,''):s;e.textContent=b.x;foc(e,true)}
+later();tbUp()}
+function bindPg(){
+pg.addEventListener('focusin',e=>{const d=e.target.closest('.bl');if(d){curId=d.dataset.id;tbUp()}});
+pg.oninput=e=>{const d=e.target.closest('.bl');if(!d)return;const b=D.b[bi(d.dataset.id)];b.x=d.textContent;if(b.t==='a'&&/^(INT|EXT|I\/E)[. \/]/i.test(b.x))setType(b,'h');later()};
+pg.onpaste=e=>{e.preventDefault();const t=(e.clipboardData.getData('text')||'').split(/\r?\n/).filter(x=>x.trim()),d=e.target.closest('.bl');if(!t.length||!d)return;document.execCommand('insertText',false,t[0]);const i=bi(d.dataset.id);let last=d;t.slice(1).forEach((x,k)=>{const ne=mk(add('a',x,i+1+k));last.after(ne);last=ne});later()};
+pg.onkeydown=e=>{const d=e.target.closest('.bl');if(!d)return;const i=bi(d.dataset.id),b=D.b[i];
+if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();if(!d.textContent.trim()&&b.t!=='a'){setType(b,'a');return}
+const off=caretAt(d),nb=add(NEXT[b.t],b.x.slice(off),i+1);b.x=b.x.slice(0,off);d.textContent=b.x;const ne=mk(nb);d.after(ne);foc(ne,false);later()}
+else if(e.key==='Tab'){e.preventDefault();setType(b,ORD[(ORD.indexOf(b.t)+(e.shiftKey?5:1))%6])}
+else if(e.key==='Backspace'&&!d.textContent&&i>0&&d.previousElementSibling){e.preventDefault();const pv=d.previousElementSibling;D.b.splice(i,1);d.remove();foc(pv,true);later()}
+else if(e.key==='ArrowUp'&&caretAt(d)===0&&d.previousElementSibling){e.preventDefault();foc(d.previousElementSibling,true)}
+else if(e.key==='ArrowDown'&&caretAt(d)>=d.textContent.length&&d.nextElementSibling){e.preventDefault();foc(d.nextElementSibling,false)}}}
+const bar=(it,act,a)=>'<nav class="bar gl">'+it.map(x=>`<button data-a="${a}" data-v="${x[0]}" class="${act===x[0]?'on':''}"><i>${x[1]}</i>${x[2]}</button>`).join('')+'</nav>';
+function home(){
+let h='<h1>Projects</h1><div class="seg gl"><button data-a="ht" data-v="p" class="'+(R0.ht==='p'?'on':'')+'">Projects</button><button data-a="ht" data-v="n" class="'+(R0.ht==='n'?'on':'')+'">My Notes</button></div>';
+if(R0.ht==='p'){if(!S.p.length)h+='<div class="emp">No projects yet. Tap Create to start one.</div>';
+S.p.forEach(p=>h+=`<button class="li gl" data-a="open" data-id="${p.id}"><span class="fi">📁</span><span style="flex:1"><b>${esc(p.title)}</b><span class="mut">${fmtD(p.start)}${p.end?' — '+fmtD(p.end):''}</span></span><span class="mut">›</span></button>`)}
+else{if(!S.n.length)h+='<div class="emp">No notes yet. Tap Create, then Write a note.</div>';
+S.n.forEach(n=>h+=`<div class="cd gl" style="margin:10px 0"><input class="f" data-ni="${n.id}" placeholder="Title" value="${esc(n.t)}"><textarea data-nt="${n.id}" placeholder="Write here">${esc(n.x)}</textarea><button class="sm" data-a="xn" data-id="${n.id}" style="align-self:flex-start">Delete</button></div>`)}
+h+='<button class="fab" data-a="sheet">+ Create</button>';
+if(sheet)h+='<div class="scrim" data-a="sheet"></div><div class="sheet gl"><button class="li" data-a="new"><span class="fi">➕</span><b>Create a new Project</b></button><button class="li" data-a="nn"><span class="fi">📝</span><span><b>Write a note</b><span class="mut">Ideas, dialogue, anything</span></span></button></div>';
+app.innerHTML=h}
+function newP(){app.innerHTML=`<div class="gl top"><button class="ic" data-a="back">‹</button><b style="flex:1;text-align:center">New Project</b><span style="width:40px"></span></div><div style="margin-top:50px;display:grid;gap:14px"><input class="f gl" id="pt" placeholder="Project Title"><label class="mut">Project Start Date<input class="f gl" type="date" id="ps" value="${iso(0)}"></label><label class="mut">Project End Date<input class="f gl" type="date" id="pe" value="${iso(30)}"></label></div><button class="fab" data-a="done">✓ Done</button>`}
+function items(list,del,tg){return list.map(i=>`<div class="gl li" style="margin:8px 0">${tg?`<button data-a="ti" data-id="${i.id}" style="font-size:20px">${i.d?'☑':'☐'}</button>`:''}<span style="flex:1;${i.d?'opacity:.5;text-decoration:line-through':''}">${esc(i.t)}</span><button class="sm" data-a="xi" data-id="${i.id}">✕</button></div>`).join('')}
+function addRow(ph){return`<div class="rw" style="margin:10px 0"><input class="f gl" id="ni" placeholder="${ph}" style="flex:1"><button class="sm" data-a="ai" style="padding:12px 16px;background:var(--acc);color:var(--accfg)">Add</button></div>`}
+function proj(){
+const sub=R0.tab==='dept'&&R0.sub?DEPT.find(x=>x[0]===R0.sub):null;
+let h=`<div class="gl top"><button class="ic" data-a="back">‹</button><div style="flex:1;text-align:center"><b>${esc(P.title)}</b><div class="mut">${sub?esc(sub[2]):TN[R0.tab]}</div></div><button class="ic" data-a="xp" aria-label="Delete project">🗑</button></div>`;
+if(R0.tab==='docs'){h+='<div class="grid">'+P.docs.map(d=>{const sn=d.b.filter(b=>b.x.trim()).slice(0,2).map(b=>esc(b.x)).join(' ');return`<div style="position:relative"><button class="cd gl" data-a="doc" data-id="${d.id}" style="width:100%;height:100%"><span class="t">${esc(d.title)}</span><span class="mut" style="font-family:'Courier Prime',monospace;overflow:hidden;max-height:3.9em">${sn||'Empty script'}</span><span class="sm" style="align-self:flex-start;background:rgba(76,155,255,.3)">Screenplay</span></button><button class="xm" data-a="xd" data-id="${d.id}" aria-label="Delete script">✕</button></div>`}).join('')+'</div><button class="fab" style="bottom:calc(92px + env(safe-area-inset-bottom,0px))" data-a="ad">+ Docs</button>'}
+else if(R0.tab==='bd'){const d=P.docs[0];let r=[],c=null;if(d)d.b.forEach(b=>{if(b.t==='h'){c={h:b.x,c:{}};r.push(c)}else if(b.t==='c'&&c&&b.x.trim())c.c[cname(b.x)]=1});
+h+=r.length?r.map((s,i)=>`<div class="gl li" style="display:block"><span class="t">${i+1}. ${esc(s.h||'Untitled scene')}</span><br><span class="mut">Cast: ${esc(Object.keys(s.c).join(', ')||'none yet')}</span></div>`).join(''):'<div class="emp">Write scene headings in your script and the breakdown fills itself.</div>'}
+else if(R0.tab==='shots'){h+=addRow('Scene 1 – wide shot of the house')+(P.shots.length?items(P.shots,1,1):'<div class="emp">No shots yet.</div>')}
+else if(!sub){h+='<div class="grid">'+DEPT.map(x=>`<button class="dp gl" data-a="dep" data-v="${x[0]}" style="color:${x[3]}"><i>${x[1]}</i>${x[2]}</button>`).join('')+'</div>'}
+else{const k=sub[0],m=k==='cast'?names(P.docs):k==='loc'?[...new Set(P.docs.flatMap(d=>d.b.filter(b=>b.t==='h'&&b.x.trim()).map(b=>b.x.replace(/^(INT\.?\/EXT\.?|EXT\.?\/INT\.?|INT\/EXT\.?|EXT\/INT\.?|INT\.?|EXT\.?)\s*/i,'').split(/\s+[-–—]\s+/)[0].trim().toUpperCase())))]:[];
+h+=addRow('Add item')+(m.length?'<h2>From your script</h2>'+m.map(x=>`<div class="gl li" style="margin:8px 0"><span class="t">${esc(x)}</span></div>`).join(''):'')+((P.dep[k]||[]).length?'<h2>Added by you</h2>'+items(P.dep[k]):'')}
+app.innerHTML=h+bar([['docs','📄','Docs'],['bd','✦','Breakdown'],['shots','🎞','Shot List'],['dept','🏢','Department']],R0.tab,'tab')}
+function cardsH(){const sc=scenesL();if(!sc.length)return'<div class="emp">No scenes yet.</div>';
+return'<div class="grid">'+sc.map((s,k)=>{const b=D.b[s.s];return`<div class="cd gl" style="border-top:5px solid ${COL[D.col[b.id]||0]}"><span class="t">${k+1}. ${esc(b.x||'Untitled scene')}</span><textarea data-s="${b.id}" placeholder="What happens? What changes?">${esc(D.syn[b.id])}</textarea><div class="rw">${COL.map((c,n)=>`<button class="dot" style="background:${c}" data-a="ca" data-x="c" data-k="${k}" data-v="${n}" aria-label="Color ${n+1}"></button>`).join('')}</div><div class="rw"><button class="sm" data-a="ca" data-x="o" data-k="${k}">Open</button><button class="sm" data-a="ca" data-x="u" data-k="${k}">Up</button><button class="sm" data-a="ca" data-x="d" data-k="${k}">Down</button><button class="sm" data-a="ca" data-x="x" data-k="${k}">✕</button></div></div>`}).join('')+'</div>'}
+function beatsH(){return['Act I – Setup','Act II – Confrontation','Act III – Resolution'].map((n,a)=>`<h2>${n}</h2>`+(P.beats.filter(b=>b.a===a).map(b=>`<div class="gl li" style="margin:8px 0"><span style="flex:1">${esc(b.t)}</span><button class="sm" data-a="xb" data-id="${b.id}">✕</button></div>`).join(''))+`<div class="rw"><input class="f gl" id="bi${a}" placeholder="Add a beat" style="flex:1"><button class="sm" data-a="ab" data-v="${a}" style="padding:12px 16px">Add</button></div>`).join('')}
+function edit(){const g=grp();
+let h=`<div class="gl top"><button class="ic" data-a="back">‹</button><input id="ttl" value="${esc(D.title)}" aria-label="Script title"><button class="ic" data-a="share" aria-label="Copy as Fountain">⤴</button></div>`;
+if(R0.et==='script'){if(g.n>1)h+='<div class="sg">'+Array.from({length:g.n},(_,i)=>`<button data-a="grp" data-v="${i}" class="${i===gi?'on':''}">Scenes ${i*10+1}–${Math.min(g.sc.length,i*10+10)}</button>`).join('')+'</div>';h+='<div class="page gl" id="pg"></div><div class="tbw gl" id="tb"></div>'}
+else h+=R0.et==='cards'?cardsH():beatsH();
+app.innerHTML=h+bar([['script','📃','ScreenPlay'],['beats','▦','Beat Board'],['cards','🗂','Index Card']],R0.et,'et');
+if(R0.et==='script'){pg=$('pg');drawPage();bindPg()}}
+function render(keep){({home,new:newP,proj,edit})[R0.v]();if(!keep)window.scrollTo(0,0)}
+function fountain(){const o=['Title: '+D.title];D.b.forEach(b=>{const x=b.x.trim();if(!x)return;const u=x.toUpperCase();
+if(b.t==='h')o.push('',/^(INT|EXT|I\/E)/i.test(x)?u:'.'+u);else if(b.t==='a')o.push('',x);else if(b.t==='c')o.push('',u);
+else if(b.t==='d'||b.t==='p')o.push(b.t==='p'&&x[0]!=='('?'('+x+')':x);else o.push('','> '+u)});return o.join('\n')}
+const lst=()=>R0.tab==='shots'?P.shots:(P.dep[R0.sub]=P.dep[R0.sub]||[]);
+document.onmousedown=e=>{if(e.target.closest('.tbw'))e.preventDefault()};
+document.onclick=e=>{const t=e.target.closest('[data-a]');if(!t)return;const d=t.dataset,a=d.a;let keep=0;
+if(a==='ht')R0.ht=d.v;
+else if(a==='sheet')sheet=!sheet;
+else if(a==='new'){sheet=false;R0.v='new'}
+else if(a==='nn'){S.n.unshift({id:uid(),t:'',x:''});sheet=false;R0.ht='n';save()}
+else if(a==='xn'){S.n=S.n.filter(n=>n.id!==d.id);save();keep=1}
+else if(a==='done'){S.p.unshift(mkProj($('pt').value.trim()||'Untitled project',$('ps').value,$('pe').value));save();R0.v='home';R0.ht='p'}
+else if(a==='open'){P=S.p.find(p=>p.id===d.id);R0.v='proj';R0.tab='docs';R0.sub=null}
+else if(a==='back'){if(R0.v==='edit')R0.v='proj';else if(R0.v==='proj'&&R0.tab==='dept'&&R0.sub)R0.sub=null;else R0.v='home'}
+else if(a==='xp'){if(confirm('Delete this project and everything in it?')){S.p=S.p.filter(p=>p.id!==P.id);save();R0.v='home'}else return}
+else if(a==='tab'){R0.tab=d.v;R0.sub=null}
+else if(a==='doc'){D=P.docs.find(x=>x.id===d.id);R0.v='edit';R0.et='script';gi=0;H=[JSON.stringify(D.b)];X=[];curId=null}
+else if(a==='ad'){P.docs.push(mkDoc('Screenplay '+(P.docs.length+1)));save();keep=1}
+else if(a==='xd'){if(confirm('Delete this script?')){P.docs=P.docs.filter(x=>x.id!==d.id);save();keep=1}else return}
+else if(a==='dep')R0.sub=d.v;
+else if(a==='ai'){const i=$('ni');if(!i||!i.value.trim())return;lst().push({id:uid(),t:i.value.trim(),d:0});save();keep=1}
+else if(a==='xi'){const l=lst(),k=l.findIndex(x=>x.id===d.id);l.splice(k,1);save();keep=1}
+else if(a==='ti'){const x=lst().find(x=>x.id===d.id);x.d=x.d?0:1;save();keep=1}
+else if(a==='et'){R0.et=d.v;curId=null}
+else if(a==='grp'){gi=+d.v;keep=1}
+else if(a==='type'){const b=curB();if(b){setType(b,d.v);foc(el(b.id),true)}return}
+else if(a==='sug'){applySug(d.v);return}
+else if(a==='undo'){undo();return}
+else if(a==='redo'){redo();return}
+else if(a==='share'){try{navigator.clipboard.writeText(fountain()).then(()=>toast('Copied as Fountain'),()=>toast('Copy blocked here'))}catch(x){toast('Copy blocked here')}return}
+else if(a==='ab'){const i=$('bi'+d.v);if(!i||!i.value.trim())return;P.beats.push({id:uid(),a:+d.v,t:i.value.trim()});save();keep=1}
+else if(a==='xb'){P.beats=P.beats.filter(b=>b.id!==d.id);save();keep=1}
+else if(a==='ca'){const sc=scenesL(),k=+d.k,s=sc[k],x=d.x;
+if(x==='c'){D.col[D.b[s.s].id]=+d.v;save();keep=1}
+else if(x==='o'){gi=Math.floor(k/10);const id=D.b[s.s].id;R0.et='script';render();jump(id);return}
+else if(x==='x'){if(!confirm('Delete this scene and everything in it?'))return;D.b.splice(s.s,s.e-s.s);if(!D.b.length){add('h','');add('a','')}save();snap();keep=1}
+else{const o=sc[k+(x==='u'?-1:1)];if(!o)return;const lo=x==='u'?o:s,hi=x==='u'?s:o;D.b=D.b.slice(0,lo.s).concat(D.b.slice(hi.s,hi.e),D.b.slice(lo.s,lo.e),D.b.slice(hi.e));save();snap();keep=1}}
+render(keep)};
+function jump(id){const e=el(id);if(e){e.scrollIntoView({block:'center'});foc(e,true)}}
+document.oninput=e=>{const t=e.target,d=t.dataset;
+if(t.id==='ttl'){D.title=t.value;save()}
+else if(d.s){D.syn[d.s]=t.value;save()}
+else if(d.ni){S.n.find(n=>n.id===d.ni).t=t.value;save()}
+else if(d.nt){S.n.find(n=>n.id===d.nt).x=t.value;save()}};
+if(window.visualViewport){const vv=visualViewport,f=()=>{const k=Math.max(0,innerHeight-vv.height-vv.offsetTop);document.documentElement.style.setProperty('--kb',k+'px');document.body.classList.toggle('kb',k>80)};vv.addEventListener('resize',f);vv.addEventListener('scroll',f)}
+render();
+</script>
+</body>
+</html>
